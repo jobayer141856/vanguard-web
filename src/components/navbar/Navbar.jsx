@@ -17,11 +17,11 @@ const Navbar = () => {
 			<NavLink to="/login" className="btn btn-ghost normal-case">
 				Pricing
 			</NavLink>
-			<NavLink
-				to="/register"
-				className="btn btn-ghost normal-case text-xl"
-			>
-				Be a Rider
+			<NavLink to="/Blog" className="btn btn-ghost normal-case">
+				Blog
+			</NavLink>
+			<NavLink to="/contact" className="btn btn-ghost normal-case">
+				Contact
 			</NavLink>
 		</>
 	);
