@@ -53,7 +53,7 @@ const servicesData = [
 
 const Services = () => {
 	return (
-		<section className="bg-secondary rounded-[2rem] py-16 px-6 md:px-12 lg:px-20 w-full mt-3">
+		<section className="bg-[#0b1b1a] rounded-[2rem] py-16 px-6 md:px-12 lg:px-20 w-full mt-3">
 			{/* Section Header */}
 			<div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-14 space-y-4">
 				<h2 className="text-3xl md:text-4xl font-bold text-white">
