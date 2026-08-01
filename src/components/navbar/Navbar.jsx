@@ -68,9 +68,9 @@ const Navbar = () => {
 				<ul className="menu menu-horizontal px-1">{links}</ul>
 			</div>
 			<div className="navbar-end gap-2">
-				<a className="btn rounded-[rem]">Sign In</a>
+				<a className="btn rounded-[.5rem]">Sign In</a>
 				<div className="flex items-center">
-					<a className="btn bg-primary rounded-[rem]">Be a rider</a>
+					<a className="btn bg-primary rounded-[.5rem]">Be a rider</a>
 					<span className="bg-[#1a1a1a] rounded-full w-10 h-10 flex items-center justify-center">
 						<FiArrowUpRight
 							size={24}
