@@ -5,6 +5,7 @@ import Services from "./components/Services";
 import Features from "./components/Features";
 import SatisfactionBanner from "./components/SatisfactionBanner";
 import Testimonials from "./components/Testimonials";
+import Faq from "./components/Faq";
 
 const Home = () => {
 	return (
@@ -16,6 +17,7 @@ const Home = () => {
 			<Features />
 			<SatisfactionBanner />
 			<Testimonials />
+			<Faq />
 		</div>
 	);
 };
