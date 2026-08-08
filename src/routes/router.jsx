@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home";
+import Coverage from "../pages/Coverage/Coverage";
 export const router = createBrowserRouter([
 	{
 		path: "/",
@@ -13,6 +14,14 @@ export const router = createBrowserRouter([
 			{
 				path: "about",
 				Component: () => <div>About</div>,
+			},
+			{
+				path: "coverage",
+				Component: Coverage,
+				loader: () =>
+					fetch("/public/data/serviceAreas.json").then((res) =>
+						res.json(),
+					),
 			},
 		],
 	},

@@ -5,16 +5,16 @@ import { FiArrowUpRight } from "react-icons/fi";
 const Navbar = () => {
 	const links = (
 		<>
-			<NavLink to="/" className="btn btn-ghost normal-case">
+			<NavLink to="/services" className="btn btn-ghost normal-case">
 				Services
 			</NavLink>
-			<NavLink to="/about" className="btn btn-ghost normal-case">
-				Coverages
+			<NavLink to="/coverage" className="btn btn-ghost normal-case">
+				Coverage
 			</NavLink>
-			<NavLink to="/contact" className="btn btn-ghost normal-case">
+			<NavLink to="/about-us" className="btn btn-ghost normal-case">
 				About Us
 			</NavLink>
-			<NavLink to="/login" className="btn btn-ghost normal-case">
+			<NavLink to="/pricing" className="btn btn-ghost normal-case">
 				Pricing
 			</NavLink>
 			<NavLink to="/Blog" className="btn btn-ghost normal-case">
