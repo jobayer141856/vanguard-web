@@ -3,6 +3,12 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../pages/Home/Home";
 import Coverage from "../pages/Coverage/Coverage";
 import AboutUs from "../pages/AboutUs/AboutUs";
+import AuthLayout from "../layouts/AuthLayout";
+import Login from "../pages/Auth/Login/Login";
+import Register from "../pages/Auth/Register/Register";
+import ForgotPassword from "../pages/Auth/ForgotPassword/ForgotPassword";
+import VerifyCode from "../pages/Auth/VerifyCode/VerifyCode";
+import ResetPassword from "../pages/Auth/ResetPassword/ResetPassword";
 export const router = createBrowserRouter([
 	{
 		path: "/",
@@ -23,6 +29,33 @@ export const router = createBrowserRouter([
 					fetch("/public/data/serviceAreas.json").then((res) =>
 						res.json(),
 					),
+			},
+		],
+	},
+	{
+		path: "/",
+		Component: AuthLayout,
+		children: [
+			{
+				path: "login",
+				Component: Login,
+			},
+			{
+				path: "register",
+				Component: Register,
+			},
+			{
+				path: "forgot-password",
+				Component: ForgotPassword,
+			},
+
+			{
+				path: "verify-code",
+				Component: VerifyCode,
+			},
+			{
+				path: "reset-password",
+				Component: ResetPassword,
 			},
 		],
 	},
