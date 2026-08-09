@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import logo from "../../assets/logo.png";
 import { FiArrowUpRight } from "react-icons/fi";
 
@@ -57,18 +57,20 @@ const Navbar = () => {
 						{links}
 					</ul>
 				</div>
-				<a className="btn btn-ghost flex items-end">
+				<Link to="/" className="btn btn-ghost flex items-end">
 					<img src={logo} alt="Logo" className="h-12 w-auto" />
 					<h1 className="text-2xl font-bold text-black -ml-3.5">
 						VanGuard
 					</h1>
-				</a>
+				</Link>
 			</div>
 			<div className="navbar-center hidden lg:flex">
 				<ul className="menu menu-horizontal px-1">{links}</ul>
 			</div>
 			<div className="navbar-end gap-2">
-				<a className="btn rounded-[.5rem]">Sign In</a>
+				<Link to="/login" className="btn rounded-[.5rem]">
+					Sign In
+				</Link>
 				<div className="flex items-center">
 					<a className="btn bg-primary rounded-[.5rem]">Be a rider</a>
 					<span className="bg-[#1a1a1a] rounded-full w-10 h-10 flex items-center justify-center">

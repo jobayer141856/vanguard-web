@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import logo from "../../../assets/logo.png";
 import authImage from "../../../assets/authimage.png";
+import { Link } from "react-router";
 
 const ResetPassword = () => {
 	const {
@@ -24,12 +25,12 @@ const ResetPassword = () => {
 			<div className="w-full md:w-1/2 flex flex-col p-8 lg:p-12 xl:p-16 relative">
 				{/* Logo */}
 				<div className="absolute top-8 left-8 lg:top-12 lg:left-12">
-					<a className="btn btn-ghost flex items-end">
+					<Link to="/" className="btn btn-ghost flex items-end">
 						<img src={logo} alt="Logo" className="h-12 w-auto" />
 						<h1 className="text-2xl font-bold text-black -ml-3.5">
 							VanGuard
 						</h1>
-					</a>
+					</Link>
 				</div>
 
 				{/* Form Container */}

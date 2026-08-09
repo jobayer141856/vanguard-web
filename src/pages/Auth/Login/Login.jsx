@@ -3,9 +3,13 @@ import logo from "../../../assets/logo.png";
 
 // Replace with your actual illustration asset path
 import authImage from "../../../assets/authimage.png";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+
+import { toast } from "react-toastify";
 
 const Login = () => {
+	const { signInUser, googleSignIn } = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -13,8 +17,78 @@ const Login = () => {
 	} = useForm();
 
 	const onSubmit = (data) => {
+		console.log("clicked");
 		console.log("Form Data:", data);
-		// Add your login logic here
+		signInUser(data.email, data.password)
+			.then((userCredential) => {
+				console.log("User signed in:", userCredential.user);
+				// Signed in
+				toast.success("Login successful!", {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+
+				<Navigate to="/" replace={true} />;
+				// Redirect or perform other actions after successful login
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.error("Error signing in:", errorCode, errorMessage);
+				toast.error(`Login failed: ${errorMessage}`, {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			});
+	};
+
+	const handleGoogleLogin = () => {
+		googleSignIn()
+			.then((userCredential) => {
+				console.log("User signed in with Google:", userCredential.user);
+				toast.success("Login successful!", {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+				<Navigate to="/" replace={true} />;
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.error(
+					"Error signing in with Google:",
+					errorCode,
+					errorMessage,
+				);
+				toast.error(`Login failed: ${errorMessage}`, {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			});
 	};
 
 	return (
@@ -23,12 +97,12 @@ const Login = () => {
 			<div className="w-full md:w-1/2 flex flex-col p-8 lg:p-12 xl:p-16 relative">
 				{/* Logo */}
 				<div className="absolute top-8 left-8 lg:top-12 lg:left-12">
-					<a className="btn btn-ghost flex items-end">
+					<Link to="/" className="btn btn-ghost flex items-end">
 						<img src={logo} alt="Logo" className="h-12 w-auto" />
 						<h1 className="text-2xl font-bold text-black -ml-3.5">
 							VanGuard
 						</h1>
-					</a>
+					</Link>
 				</div>
 
 				{/* Form Container */}
@@ -133,7 +207,10 @@ const Login = () => {
 						</div>
 
 						{/* Google Login Button */}
-						<button className="btn w-full bg-[#f3f4f6] hover:bg-[#e5e7eb] text-gray-700 border-none font-medium flex items-center justify-center gap-3">
+						<button
+							onClick={handleGoogleLogin}
+							className="btn w-full bg-[#f3f4f6] hover:bg-[#e5e7eb] text-gray-700 border-none font-medium flex items-center justify-center gap-3"
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 48 48"
