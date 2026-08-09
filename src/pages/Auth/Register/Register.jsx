@@ -1,18 +1,233 @@
 import { useForm } from "react-hook-form";
 import logo from "../../../assets/logo.png";
 import authImage from "../../../assets/authimage.png";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import useAuth from "../../../hooks/useAuth";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
+	const [preview, setPreview] = useState(null);
+	const { signUpUser } = useAuth();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm();
 
+	const handleAvatarChange = (event) => {
+		const file = event.target.files?.[0];
+		if (!file) {
+			setPreview(null);
+			return;
+		}
+
+		if (!file.type.startsWith("image/")) {
+			toast.error("Please select a valid image file.", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				progress: undefined,
+				theme: "light",
+			});
+			return;
+		}
+		if (file.size > 5 * 1024 * 1024) {
+			toast.error(
+				"File size exceeds 5MB. Please select a smaller image.",
+				{
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				},
+			);
+			return;
+		}
+
+		const imageUrl = URL.createObjectURL(file);
+		setPreview(imageUrl);
+	};
+
+	// const uploadAvatarToCloudinary = async (file) => {
+	// 	const formData = new FormData();
+	// 	formData.append("file", file);
+	// 	formData.append(
+	// 		"upload_preset",
+	// 		import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
+	// 	);
+
+	// 	try {
+	// 		const response = await fetch(
+	// 			`${import.meta.env.VITE_CLOUDINARY_URL}/image/upload`,
+	// 			{
+	// 				method: "POST",
+	// 				body: formData,
+	// 			},
+	// 		);
+	// 		const data = await response.json();
+	// 		return data.secure_url;
+	// 	} catch (error) {
+	// 		console.error("Error uploading avatar to Cloudinary:", error);
+	// 		toast.error("Failed to upload avatar. Please try again.", {
+	// 			position: "top-right",
+	// 			autoClose: 3000,
+	// 			hideProgressBar: false,
+	// 			closeOnClick: true,
+	// 			pauseOnHover: true,
+	// 			draggable: true,
+	// 			progress: undefined,
+	// 			theme: "light",
+	// 		});
+	// 		return null;
+	// 	}
+	// };
+
+	const uploadAvatarToCloudinary = async (file) => {
+		try {
+			const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+
+			const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+			const formData = new FormData();
+
+			formData.append("file", file);
+			formData.append("upload_preset", uploadPreset);
+
+			const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+			const response = await fetch(uploadUrl, {
+				method: "POST",
+				body: formData,
+			});
+
+			const data = await response.json();
+
+			console.log("Cloudinary status:", response.status);
+			console.log("Cloudinary response:", data);
+
+			if (!response.ok) {
+				throw new Error(
+					data?.error?.message || "Cloudinary upload failed",
+				);
+			}
+
+			return {
+				url: data.secure_url,
+				publicId: data.public_id,
+			};
+		} catch (error) {
+			console.error("Cloudinary upload error:", error);
+			return null;
+		}
+	};
+
 	const onSubmit = (data) => {
-		console.log("Form Data:", data);
-		// Add your registration logic here (including handling the avatar file)
+		signUpUser(data.email, data.password)
+			.then((userCredential) => {
+				const firebaseUser = userCredential.user;
+				if (data.avatar && data.avatar[0]) {
+					uploadAvatarToCloudinary(data.avatar[0])
+						.then((avatarUrl) => {
+							if (avatarUrl) {
+								// Update the user's profile with the avatar URL
+								updateProfile(firebaseUser, {
+									displayName: data.name,
+									photoURL: avatarUrl.url,
+								})
+									.then(() => {
+										toast.success(
+											"Registration successful and profile updated with avatar!",
+											{
+												position: "top-right",
+												autoClose: 3000,
+												hideProgressBar: false,
+												closeOnClick: true,
+												pauseOnHover: true,
+												draggable: true,
+												progress: undefined,
+												theme: "light",
+											},
+										);
+										<Navigate to="/" replace={true} />;
+									})
+									.catch((error) => {
+										console.error(
+											"Error updating user profile:",
+											error,
+										);
+										toast.error(
+											"Failed to update profile. Please try again.",
+											{
+												position: "top-right",
+												autoClose: 3000,
+												hideProgressBar: false,
+												closeOnClick: true,
+												pauseOnHover: true,
+												draggable: true,
+												progress: undefined,
+												theme: "light",
+											},
+										);
+									});
+							}
+						})
+						.catch((error) => {
+							console.error("Error uploading avatar:", error);
+							toast.error(
+								"Failed to upload avatar. Please try again.",
+								{
+									position: "top-right",
+									autoClose: 3000,
+									hideProgressBar: false,
+									closeOnClick: true,
+									pauseOnHover: true,
+									draggable: true,
+									progress: undefined,
+									theme: "light",
+								},
+							);
+						});
+				}
+				toast.success("Registration successful!", {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+				// Redirect or perform other actions after successful registration
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.error(
+					"Error registering user:",
+					errorCode,
+					errorMessage,
+				);
+				toast.error(`Registration failed: ${errorMessage}`, {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			});
 	};
 
 	return (
@@ -50,7 +265,19 @@ const Register = () => {
 									accept="image/*"
 									className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
 									{...register("avatar")}
+									onChange={handleAvatarChange}
 								/>
+								{preview ? (
+									<img
+										src={preview}
+										alt="Avatar Preview"
+										className="w-full h-full object-cover rounded-full"
+									/>
+								) : (
+									<span className="text-gray-400 text-sm">
+										Upload
+									</span>
+								)}
 								{/* User Silhouette Icon */}
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
