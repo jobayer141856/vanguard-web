@@ -9,6 +9,8 @@ import Register from "../pages/Auth/Register/Register";
 import ForgotPassword from "../pages/Auth/ForgotPassword/ForgotPassword";
 import VerifyCode from "../pages/Auth/VerifyCode/VerifyCode";
 import ResetPassword from "../pages/Auth/ResetPassword/ResetPassword";
+import BeARider from "../pages/BeARider/BeARider";
+import PrivateRoute from "../routes/PrivateRoute";
 export const router = createBrowserRouter([
 	{
 		path: "/",
@@ -29,6 +31,14 @@ export const router = createBrowserRouter([
 					fetch("/public/data/serviceAreas.json").then((res) =>
 						res.json(),
 					),
+			},
+			{
+				path: "be-a-rider",
+				element: (
+					<PrivateRoute>
+						<BeARider />
+					</PrivateRoute>
+				),
 			},
 		],
 	},

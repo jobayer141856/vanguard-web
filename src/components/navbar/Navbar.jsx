@@ -17,11 +17,8 @@ const Navbar = () => {
 			<NavLink to="/pricing" className="btn btn-ghost normal-case">
 				Pricing
 			</NavLink>
-			<NavLink to="/Blog" className="btn btn-ghost normal-case">
-				Blog
-			</NavLink>
-			<NavLink to="/contact" className="btn btn-ghost normal-case">
-				Contact
+			<NavLink to="/be-a-rider" className="btn btn-ghost normal-case">
+				Be a Rider
 			</NavLink>
 		</>
 	);
@@ -71,7 +68,7 @@ const Navbar = () => {
 				<Link to="/login" className="btn rounded-[.5rem]">
 					Sign In
 				</Link>
-				<div className="flex items-center">
+				<Link to="/be-a-rider" className="flex items-center">
 					<a className="btn bg-primary rounded-[.5rem]">Be a rider</a>
 					<span className="bg-[#1a1a1a] rounded-full w-10 h-10 flex items-center justify-center">
 						<FiArrowUpRight
@@ -80,7 +77,7 @@ const Navbar = () => {
 							strokeWidth={2.5}
 						/>
 					</span>
-				</div>
+				</Link>
 			</div>
 		</div>
 	);
