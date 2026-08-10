@@ -11,6 +11,7 @@ import VerifyCode from "../pages/Auth/VerifyCode/VerifyCode";
 import ResetPassword from "../pages/Auth/ResetPassword/ResetPassword";
 import BeARider from "../pages/BeARider/BeARider";
 import PrivateRoute from "../routes/PrivateRoute";
+import Pricing from "../pages/Priicing/Pricing";
 export const router = createBrowserRouter([
 	{
 		path: "/",
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
 						<BeARider />
 					</PrivateRoute>
 				),
+			},
+			{
+				path: "pricing",
+				Component: Pricing,
 			},
 		],
 	},
