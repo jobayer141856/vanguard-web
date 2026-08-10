@@ -3,13 +3,14 @@ import logo from "../../../assets/logo.png";
 
 // Replace with your actual illustration asset path
 import authImage from "../../../assets/authimage.png";
-import { Link, Navigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 
 import { toast } from "react-toastify";
 
 const Login = () => {
 	const { signInUser, googleSignIn } = useAuth();
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -17,8 +18,8 @@ const Login = () => {
 	} = useForm();
 
 	const onSubmit = (data) => {
-		console.log("clicked");
-		console.log("Form Data:", data);
+		// console.log("clicked");
+		// console.log("Form Data:", data);
 		signInUser(data.email, data.password)
 			.then((userCredential) => {
 				console.log("User signed in:", userCredential.user);
@@ -34,8 +35,7 @@ const Login = () => {
 					theme: "light",
 				});
 
-				<Navigate to="/" replace={true} />;
-				// Redirect or perform other actions after successful login
+				navigate("/"); // Redirect to the home page after successful login
 			})
 			.catch((error) => {
 				const errorCode = error.code;
@@ -57,18 +57,21 @@ const Login = () => {
 	const handleGoogleLogin = () => {
 		googleSignIn()
 			.then((userCredential) => {
-				console.log("User signed in with Google:", userCredential.user);
-				toast.success("Login successful!", {
-					position: "top-right",
-					autoClose: 3000,
-					hideProgressBar: false,
-					closeOnClick: true,
-					pauseOnHover: true,
-					draggable: true,
-					progress: undefined,
-					theme: "light",
-				});
-				<Navigate to="/" replace={true} />;
+				// console.log("User signed in with Google:", userCredential.user);
+				toast.success(
+					`Login successful! Welcome ${userCredential.user.displayName}`,
+					{
+						position: "top-right",
+						autoClose: 3000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					},
+				);
+				navigate("/");
 			})
 			.catch((error) => {
 				const errorCode = error.code;

@@ -17,7 +17,7 @@ const BeARider = () => {
 
 	return (
 		<div className="min-h-screen bg-[#f4f5f7] py-10 px-4 sm:px-8">
-			<div className="max-w-[1200px] mx-auto bg-white rounded-[2.5rem] shadow-[0_4px_25px_rgb(0,0,0,0.03)] p-8 md:p-12 lg:p-16">
+			<div className="max-w-[1200px] mx-auto bg-white rounded-[2rem] shadow-[0_4px_25px_rgb(0,0,0,0.03)] p-8 md:p-12 lg:p-16">
 				{/* Top Header Section */}
 				<div className="mb-8">
 					<h1 className="text-4xl md:text-[2.75rem] font-bold text-[#0b1b1a] mb-4">

@@ -2,8 +2,13 @@ import { useForm } from "react-hook-form";
 import logo from "../../../assets/logo.png";
 import authImage from "../../../assets/authimage.png";
 import { Link } from "react-router";
+import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const ForgotPassword = () => {
+	const { resetPassword } = useAuth();
+	const navigate = useNavigate();
 	const {
 		register,
 		handleSubmit,
@@ -11,8 +16,39 @@ const ForgotPassword = () => {
 	} = useForm();
 
 	const onSubmit = (data) => {
-		console.log("Form Data:", data);
-		// Add your password reset logic here
+		resetPassword(data.email)
+			.then(() => {
+				toast.success(
+					"Password reset email sent! Please check your inbox.",
+					{
+						position: "top-right",
+						autoClose: 3000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					},
+				);
+				navigate("/login"); // Redirect to the login page after successful password reset
+			})
+			.catch((error) => {
+				console.error("Error sending password reset email:", error);
+				toast.error(
+					`Failed to send password reset email: ${error.message}`,
+					{
+						position: "top-right",
+						autoClose: 3000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					},
+				);
+			});
 	};
 
 	return (

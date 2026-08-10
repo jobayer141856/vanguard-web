@@ -4,10 +4,10 @@ import { Navigate } from "react-router";
 const PrivateRoute = ({ children }) => {
 	const { user, loading } = useAuth();
 	if (loading) {
-		return <div>Loading...</div>;
+		return <span className="loading loading-ring loading-xl"></span>;
 	}
 	if (!user) {
-		return <Navigate to="/login" replace />;
+		return <Navigate to="/login" from={window.location.pathname} replace />;
 	}
 	return children;
 };
