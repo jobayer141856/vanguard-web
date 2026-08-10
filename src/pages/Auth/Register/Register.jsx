@@ -9,7 +9,7 @@ import { updateProfile } from "firebase/auth";
 
 const Register = () => {
 	const [preview, setPreview] = useState(null);
-	const { signUpUser } = useAuth();
+	const { signUpUser, googleSignIn } = useAuth();
 	const {
 		register,
 		handleSubmit,
@@ -230,6 +230,47 @@ const Register = () => {
 			});
 	};
 
+	const registerWithGoogle = () => {
+		googleSignIn()
+			.then((result) => {
+				const user = result.user;
+
+				toast.success(
+					`${user.displayName}, you have successfully signed in with Google!`,
+					{
+						position: "top-right",
+						autoClose: 3000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "light",
+					},
+				);
+				<Navigate to="/" replace={true} />;
+			})
+			.catch((error) => {
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.error(
+					"Error signing in with Google:",
+					errorCode,
+					errorMessage,
+				);
+				toast.error(`Google sign-in failed: ${errorMessage}`, {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: false,
+					closeOnClick: true,
+					pauseOnHover: true,
+					draggable: true,
+					progress: undefined,
+					theme: "light",
+				});
+			});
+	};
+
 	return (
 		<div className="min-h-screen flex flex-col md:flex-row bg-white">
 			{/* Left Side: Register Form */}
@@ -412,7 +453,10 @@ const Register = () => {
 						</div>
 
 						{/* Google Register Button */}
-						<button className="btn w-full bg-[#f3f4f6] hover:bg-[#e5e7eb] text-gray-700 border-none font-medium flex items-center justify-center gap-3">
+						<button
+							onClick={registerWithGoogle}
+							className="btn w-full bg-[#f3f4f6] hover:bg-[#e5e7eb] text-gray-700 border-none font-medium flex items-center justify-center gap-3"
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								viewBox="0 0 48 48"
